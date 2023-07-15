@@ -17878,6 +17878,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               if (response.data.code == 200) {
                 localStorage.setItem("token", response.data.token);
                 _this.$router.push("/dashboard");
+              } else {
+                alert(response.data.message);
               }
             case 5:
             case "end":

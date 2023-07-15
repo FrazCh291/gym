@@ -13,8 +13,7 @@ class UserController extends Controller
      */
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt(['email'=>$request->email,'password'=>$request->password])) {
             $user = Auth::user();
             if( $user->role=='admin'){
             $token = $user->createToken('importapp')->accessToken;
@@ -26,7 +25,7 @@ class UserController extends Controller
             }
         }
         $message = 'Invalid email or password';
-        $response = ['code' => 200, 'status' => false, 'token' => '', 'message' => $message];
+        $response = ['code' => 401, 'status' => false, 'token' => '', 'message' => $message];
         return response($response);
     }
     public function index(){

@@ -40,6 +40,8 @@ export default {
             if(response.data.code == 200){
                 localStorage.setItem("token",response.data.token);
                 this.$router.push("/dashboard");
+            }else{
+                alert(response.data.message)
             }
         }
     }
