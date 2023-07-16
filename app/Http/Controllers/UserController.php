@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -28,8 +29,10 @@ class UserController extends Controller
         $response = ['code' => 401, 'status' => false, 'token' => '', 'message' => $message];
         return response($response);
     }
-    public function index(){
-
+    public function index()
+    {
+        $user = User::where('role','team_member')->get();
+        return response()->json($user);
     }
 
     /**
@@ -45,7 +48,19 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       $user = User::create([
+            'username' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'password'=> Hash::make('password'),
+            'role'=>'team_member'
+        ]);
+        if($user){
+            $data['message'] = 'User Added Sucessfully';
+            $data['status'] = 200;
+            return response()->json($data);
+        }
     }
 
     /**
@@ -61,7 +76,8 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $edit = User::findorfail($id);
+        return response()->json($edit);
     }
 
     /**
@@ -69,7 +85,19 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $user = User::where('id',$id)->update([
+            'username' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'password'=> Hash::make('password'),
+            'role'=>'team_member'
+        ]);
+        if($user){
+            $data['message'] = 'User Added Sucessfully';
+            $data['status'] = 200;
+            return response()->json($data);
+        }
     }
 
     /**
@@ -77,6 +105,8 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $del = User::findorfail($id);
+        $del->delete();
+        return response()->json($del);
     }
 }

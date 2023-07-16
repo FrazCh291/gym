@@ -16,20 +16,22 @@
                               <table class="table">
                                   <thead>
                                       <tr>
-                                          <th>Profile</th>
-                                          <th>VatNo.</th>
-                                          <th>Created</th>
-                                          <th>Status</th>
-                                          <th></th>
+                                          <th>Name</th>
+                                          <th>Email</th>
+                                          <th>Phone</th>
+                                          <th>Address</th>
+                                          <th>Role</th>
+                                          <th>Action</th>
                                       </tr>
                                   </thead>
                                   <tbody>
-                                      <tr>
-                                          <td>Jacob</td>
-                                          <td>53275531</td>
-                                          <td>12 May 2017</td>
-                                          <td><a href="" class="btn btn-success">Edit</a>&nbsp;
-                                          <a href="" class="btn btn-danger">Delete</a></td>
+                                      <tr v-for="user in Users">
+                                          <td>{{user.username}}</td>
+                                          <td>{{user.email}}</td>
+                                          <td>{{user.phone}}</td>
+                                          <td>{{user.address}}</td>
+                                          <td><a @click="edit(user.id)" class="btn btn-success">Edit</a>&nbsp;
+                                          <a @click="del(user.id)" class="btn btn-danger">Delete</a></td>
                                       </tr>
                                   </tbody>
                               </table>
@@ -44,11 +46,33 @@
 <script>
 import sidebar from '../../sidebar.vue';
 import navbar from '../../navbar.vue';
+import axios from 'axios';
 export default {
   name:'index',
+  data(){
+        return{
+            Users:''
+        }
+    },
   components: {
       navbar,
       sidebar
-  }
+  },
+  methods:{
+        async getUser(){
+            const response = await axios.get('/users');
+            this.Users = response.data;
+        },
+        async edit(id) {
+            this.$router.push(`/edit/user/${id}`);
+        },
+        async del(id){
+            const response = await axios.get('/delete/user/'+id);
+            this.getUser();
+        }
+    },
+    mounted(){
+        this.getUser();
+    }
 }
 </script>

@@ -60,10 +60,10 @@ export default {
             this.Settings = response.data;
         },
         async edit(id) {
-            this.$router.push(`/edit/setting/${id}`);
+            this.$router.push(`/edit/product/${id}`);
         },
         async del(id){
-            const response = await axios.get('/delete/setting'+id);
+            const response = await axios.get('/delete/product'+id);
             this.getSetting();
         }
     },
