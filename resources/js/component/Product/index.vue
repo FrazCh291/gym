@@ -17,18 +17,25 @@
                                     <thead>
                                         <tr>
                                             <th>Name</th>
-                                            <th>Value</th>
-                                            <th>Status</th>
+                                            <th>Title</th>
+                                            <th>Image</th>
+                                            <th>File</th>
+                                            <th>Price</th>
                                             <th>Action</th>
+                                            <th></th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td><a @click="edit()" class="btn btn-success">Edit</a>&nbsp;
-                                            <a @click="del()" class="btn btn-danger">Delete</a></td>
+                                        <tr v-for="product in Products">
+                                            <td>{{ product.name }}</td>
+                                            <td>{{ product.title }}</td>
+                                            <td>{{ product.image }}</td>
+                                            <td>{{ product.file }}</td>
+                                            <td>{{ product.price }}</td>
+                                            <td>{{ product.status }}</td>
+                                            <td><a @click="edit(product.id)" class="btn btn-success">Edit</a>&nbsp;
+                                            <a @click="del(product.id)" class="btn btn-danger">Delete</a></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -43,11 +50,12 @@
 <script>
 import sidebar from '../../sidebar.vue';
 import navbar from '../../navbar.vue';
+import axios from 'axios';
 export default {
     name:'index',
     data(){
         return{
-            Settings:''
+            Products:''
         }
     },
     components: {
@@ -55,20 +63,20 @@ export default {
         sidebar
     },
     methods:{
-        async getSetting(){
+        async getProduct(){
             const response = await axios.get('/product');
-            this.Settings = response.data;
+            this.Products = response.data;
         },
         async edit(id) {
             this.$router.push(`/edit/product/${id}`);
         },
         async del(id){
-            const response = await axios.get('/delete/product'+id);
-            this.getSetting();
+            const response = await axios.get('/delete/product/'+id);
+            this.getProduct();
         }
     },
     mounted(){
-        this.getSetting();
+        this.getProduct();
     }
 }
 </script>

@@ -44,6 +44,7 @@ Route::controller(ProductController::class)->group(function () {
     Route::post('add/product', 'store');
     Route::get('product', 'index');
     Route::get('edit/product/{id}', 'edit');
+    Route::post('update/product/{id}', 'update');
     Route::get('delete/product/{id}', 'destroy');
 });
 

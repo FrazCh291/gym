@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -11,7 +12,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $product = Product::all();
+        return response()->json($product);
     }
 
     /**
@@ -27,7 +29,23 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if($request->status == true){
+            $status = 1;
+        }else{
+            $status = 0;
+        }
+        $product = Product::create([
+            'category_id' => $request->category_id,
+            'title' => $request->title,
+            'name' => $request->name,
+            'price' => $request->price,
+            'status' => $status,
+        ]);
+        $data['message'] = 'Product Add Successfully';
+        $data['status'] = 200;
+        if(!empty($product)){
+            return response()->json($data);
+        }
     }
 
     /**
@@ -43,7 +61,8 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $edit = Product::findorfail($id);
+        return response()->json($edit);
     }
 
     /**
@@ -51,7 +70,23 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        if($request->status == true){
+            $status = 1;
+        }else{
+            $status = 0;
+        }
+        $product = Product::where('id',$id)->update([
+            'category_id' => $request->category_id,
+            'title' => $request->title,
+            'name' => $request->name,
+            'price' => $request->price,
+            'status' => $status,
+        ]);
+        $data['message'] = 'Product Update Successfully';
+        $data['status'] = 200;
+        if(!empty($product)){
+            return response()->json($data);
+        }
     }
 
     /**
@@ -59,6 +94,10 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $delProduct = Product::findorfail($id);
+        $delProduct->delete();
+        $data['message'] = 'Product Delete Successfully';
+        return response()->json($data);
     }
 }
+

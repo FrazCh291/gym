@@ -12,7 +12,7 @@
                                 <div class="form-group">
                                     <label for="exampleInputUsername1">Name</label>
                                     <input type="text" name="name" v-model="form.name" class="form-control" id="exampleInputUsername1"
-                                        placeholder="value">
+                                        placeholder="Username">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputUsername1">Value</label>
