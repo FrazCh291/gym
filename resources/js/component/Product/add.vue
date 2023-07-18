@@ -8,9 +8,9 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Add Product</h4>
-                            <form class="forms-sample" @submit.prevent="submit">
+                            <form class="forms-sample" @submit.prevent="submit" enctype="multipart/form-data">
                                 <label for="">Select Category</label>
-                                <select class="form-select" aria-label="Default select example">
+                                <select class="form-select" aria-label="Default select example" v-model="form.category_id">
                                     <option>Select Category</option>
                                     <option v-for="category in categories" :value="category.id">
                                         {{ category.name }}
@@ -28,13 +28,13 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputUsername1">Image</label>
-                                    <input type="file" name="image" @change="" multiple="multiple" class="form-control"
-                                        id="exampleInputUsername1" placeholder="Image">
+                                    <input type="file" name="image" @change="uploadImage($event)" multiple="multiple"
+                                        class="form-control" id="exampleInputUsername1" placeholder="Image">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputUsername1">File</label>
-                                    <input type="file" name="file" @change="" multiple="multiple" class="form-control"
-                                        id="exampleInputUsername1" placeholder="File">
+                                    <input type="file" name="file" @change="uploadFile($event)" multiple="multiple"
+                                        class="form-control" id="exampleInputUsername1" placeholder="File">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputUsername1">Price</label>
@@ -67,9 +67,13 @@ export default {
                 name: '',
                 title: '',
                 price: '',
-                status: ''
+                status: '',
+                category_id: '',
             },
-            categories: ''
+            categories: '',
+            selectedFiles: '',
+            selectedImage: '',
+
 
         }
     },
@@ -78,17 +82,34 @@ export default {
         sidebar
     },
     methods: {
-       async getCategory() {
+        async getCategory() {
             const response = await axios.get('/category');
-            if(response.data){
+            if (response.data) {
                 this.categories = response.data;
             }
         },
-       async submit() {
-            const response = await axios.post('/add/product',this.form);
-            if(response.data.status == 200){
+        async submit() {
+            const formData = new FormData();
+            formData.append('images', this.selectedImage);
+            formData.append('file', this.selectedFiles);
+            formData.append('name', this.form.name);
+            formData.append('category_id', this.form.category_id);
+            formData.append('title', this.form.title);
+            formData.append('price', this.form.price);
+            formData.append('status', this.form.status);
+            const config = {
+                headers: { 'content-type': 'multipart/form-data' }
+            }
+            const response = await axios.post('/add/product',formData,config);
+            if (response.data.status == 200) {
                 this.$router.push('/product')
             }
+        },
+        uploadFile(e) {
+            this.selectedFiles = e.target.files;
+        },
+        uploadImage(e) {
+            this.selectedImage = e.target.files;
         }
     },
     mounted() {

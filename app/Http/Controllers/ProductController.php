@@ -29,6 +29,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        return $request->all();
         if($request->status == true){
             $status = 1;
         }else{
