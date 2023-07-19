@@ -17,4 +17,7 @@ class Product extends Model
         'price',
         'status',
     ];
+    public function files(){
+       return $this->hasMany(Media::class,'product_id','id');
+    }
 }

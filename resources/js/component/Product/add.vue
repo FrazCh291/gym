@@ -37,8 +37,8 @@
                                 </div> -->
                                 <div class="upload__box">
                                     <label for="exampleInputUsername1">Image</label>
-                                    <input type="file" class="form-control" multiple="multiple"
-                                        @change="handleFileChange" :data-max_length="maxImages">
+                                    <input type="file" class="form-control" multiple="multiple" @change="handleFileChange"
+                                        :data-max_length="maxImages">
                                     <div class="upload__img-wrap">
                                         <div v-for="(img, index) in imageArray" :key="index" class="upload__img-box">
                                             <div :style="'background-image: url(' + img.url + ')'" :data-number="index"
@@ -83,7 +83,7 @@ export default {
         return {
             errors: [],
             imageArray: [],
-            Allimages:[],
+            pdfArray: [],
             maxImages: 5,
             form: {
                 name: '',
@@ -95,10 +95,6 @@ export default {
                 images: []
             },
             categories: '',
-            selectedFiles: '',
-            selectedImage: '',
-
-
         }
     },
     components: {
@@ -113,9 +109,6 @@ export default {
             }
         },
         async submit(e) {
-            console.log(this.Allimages)
-            this.form.images = this.Allimages;
-            console.log(this.form.images)
             this.errors = [];
             if (!this.form.name) {
                 this.errors.push('Name required.');
@@ -137,24 +130,36 @@ export default {
                 this.errors.push('Files required.');
                 return;
             }
-            if (!this.form.images) {
-                this.errors.push('Images required.');
-                return;
-            }
 
             e.preventDefault();
-            const response = await axios.post('/add/product', this.form);
+            const config = {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            }
+            const response = await axios.post('/add/product', this.form,config);
             if (response.data.status == 200) {
                 this.$router.push('/product')
             }
         },
         uploadFile(e) {
-            this.selectedFiles = e.target.files;
-            this.form.files = this.selectedFiles
+            var files = e.target.files;
+            const filesArr = Array.from(files);
+
+            filesArr.forEach((file) => {
+                if (!file.type.match('pdf.*') || this.imageArray.length >= this.maxImages) {
+                    return;
+                }
+                this.pdfArray.push({
+                    name: file.name,
+                    url: URL.createObjectURL(file),
+                    file: file,
+                });
+                this.form.files = this.pdfArray
+            });
         },
         handleFileChange(event) {
             var files = event.target.files;
-            this.Allimages  = files
             const filesArr = Array.from(files);
 
             filesArr.forEach((file) => {
@@ -164,8 +169,9 @@ export default {
                 this.imageArray.push({
                     name: file.name,
                     url: URL.createObjectURL(file),
+                    image: file,
                 });
-                
+                this.form.images = this.imageArray
             });
         },
         removeImage(index) {
@@ -178,78 +184,77 @@ export default {
 }
 </script>
 <style>
-
 p {
-  margin: 0;
+    margin: 0;
 }
 
 
 
 
 .upload__btn {
-  display: inline-block;
-  font-weight: 600;
-  color: #fff;
-  text-align: center;
-  min-width: 116px;
-  padding: 5px;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  border: 2px solid;
-  background-color: #4045ba;
-  border-color: #4045ba;
-  border-radius: 10px;
-  line-height: 26px;
-  font-size: 14px;
+    display: inline-block;
+    font-weight: 600;
+    color: #fff;
+    text-align: center;
+    min-width: 116px;
+    padding: 5px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 2px solid;
+    background-color: #4045ba;
+    border-color: #4045ba;
+    border-radius: 10px;
+    line-height: 26px;
+    font-size: 14px;
 }
 
 .upload__btn:hover {
-  background-color: unset;
-  color: #4045ba;
-  transition: all 0.3s ease;
+    background-color: unset;
+    color: #4045ba;
+    transition: all 0.3s ease;
 }
 
 .upload__btn-box {
-  margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 .upload__img-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 -10px;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -10px;
 }
 
 .upload__img-box {
-  width: 200px;
-  padding: 0 10px;
-  margin-bottom: 12px;
+    width: 200px;
+    padding: 0 10px;
+    margin-bottom: 12px;
 }
 
 .upload__img-close {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.5);
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  text-align: center;
-  line-height: 24px;
-  z-index: 1;
-  cursor: pointer;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    text-align: center;
+    line-height: 24px;
+    z-index: 1;
+    cursor: pointer;
 }
 
 .upload__img-close:after {
-  content: '\2716';
-  font-size: 14px;
-  color: white;
+    content: '\2716';
+    font-size: 14px;
+    color: white;
 }
 
 .img-bg {
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  position: relative;
-  padding-bottom: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    padding-bottom: 100%;
 }
 </style>

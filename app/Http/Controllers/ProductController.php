@@ -14,7 +14,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $product = Product::all();
+        $product = Product::with('files')->get();
         return response()->json($product);
     }
 
@@ -31,31 +31,39 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        Log::info($request->all());
-        return;
         if($request->status == true){
             $status = 1;
         }else{
             $status = 0;
         }
-        // $product = Product::create([
-        //     'category_id' => $request->category_id,
-        //     'title' => $request->title,
-        //     'name' => $request->name,
-        //     'price' => $request->price,
-        //     'status' => $status,
-        // ]);
+        $product = Product::create([
+            'category_id' => $request->category_id,
+            'title' => $request->title,
+            'name' => $request->name,
+            'price' => $request->price,
+            'status' => $status,
+        ]);
         if($request->has('images')){
             foreach ($request->images as $image){
-                $file = $image['name'];
-                Log::info($file);
+                $file = $image['image'];
                 $originalname = $file->getClientOriginalName();
-                // Log::info($file,$originalname);
-                $path = $file->storeAs('uploads',$originalname);
+                $path = $file->storeAs('images',$originalname);
                 $images = Media::create([
-                    'product_id' => '1',
+                    'product_id' => $product->id,
                     'image' => $path,
                     'type' => 'image'
+                ]);
+            }
+        }
+        if($request->has('files')){
+            foreach ($request['files'] as $key=> $file){
+                $file = $file['file'];
+                $originalname = $file->getClientOriginalName();
+                $path = $file->storeAs('pdf',$originalname);
+                $images = Media::create([
+                    'product_id' => $product->id,
+                    'image' => $path,
+                    'type' => 'pdf'
                 ]);
             }
         }
@@ -79,7 +87,7 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        $edit = Product::findorfail($id);
+        $edit = Product::with('files')->findorfail($id);
         return response()->json($edit);
     }
 

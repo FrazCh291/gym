@@ -9,34 +9,25 @@
                         <div class="card-body">
                             <div class="row">
                                 <h4 class="card-title col-11">Product</h4>
-                                <router-link to="add/product" class="nav-link btn btn-primary col-1">Add</router-link>
+                                <router-link to="/product" class="nav-link btn btn-primary col-1">Back</router-link>
                             </div>
                             
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Title</th>
                                             <th>Image</th>
                                             <th>File</th>
-                                            <th>Price</th>
-                                            <th>Status</th>
                                             <th>Action</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="product in Products">
-                                            <td>{{ product.name }}</td>
-                                            <td>{{ product.title }}</td>
-                                            <td>{{ product.image }}</td>
-                                            <td>{{ product.file }}</td>
-                                            <td>{{ product.price }}</td>
-                                            <td>{{ product.status }}</td>
-                                            <td><a @click="show(product.id)" class="btn btn-warning">Show</a>&nbsp;
-                                            <a @click="edit(product.id)" class="btn btn-success">Edit</a>&nbsp;
-                                            <a @click="del(product.id)" class="btn btn-danger">Delete</a></td>
+                                        <tr v-for="file in files">
+                                            <td>{{ file.image }}</td>
+                                            <td>{{ file.type }}</td>
+                                            <td>
+                                            <a @click="del(file.id)" class="btn btn-danger">Delete</a></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -56,7 +47,7 @@ export default {
     name:'index',
     data(){
         return{
-            Products:''
+            files:''
         }
     },
     components: {
@@ -64,23 +55,17 @@ export default {
         sidebar
     },
     methods:{
-        async getProduct(){
+        async getMedia(){
             const response = await axios.get('/product');
-            this.Products = response.data;
-        },
-        async edit(id) {
-            this.$router.push(`/edit/product/${id}`);
-        },
-        async show(id) {
-            this.$router.push(`/show/product/${id}`);
+            this.files = response.data[0].files;
         },
         async del(id){
-            const response = await axios.get('/delete/product/'+id);
+            const response = await axios.get('/delete/file/'+id);
             this.getProduct();
         }
     },
     mounted(){
-        this.getProduct();
+        this.getMedia();
     }
 }
 </script>

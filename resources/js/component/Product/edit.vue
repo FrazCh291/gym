@@ -66,6 +66,9 @@ export default {
     data() {
         return {
             errors: [],
+            imageArray: [],
+            pdfArray: [],
+            maxImages: 5,
             form: {
                 name: '',
                 title: '',
@@ -99,36 +102,75 @@ export default {
        async submit() {
         this.errors = [];
             if (!this.form.name) {
-                this.errors.push('Name required.');
+                this.errors.push('Name required');
                 return;
             }
             if (!this.form.title) {
-                this.errors.push('Title required.');
+                this.errors.push('Title required');
                 return;
             }
             if (!this.form.price) {
-                this.errors.push('Price required.');
+                this.errors.push('Price required');
                 return;
             }
             if (!this.form.category_id) {
-                this.errors.push('Category required.');
+                this.errors.push('Category required');
                 return;
             }
             if (!this.form.files) {
-                this.errors.push('Files required.');
+                this.errors.push('Files required');
                 return;
             }
             if (!this.form.images) {
-                this.errors.push('Images required.');
+                this.errors.push('Images required');
                 return;
             }
-
             e.preventDefault();
-            const response = await axios.post('update/product/'+this.$route.params.id,this.form);
+            const config = {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            }
+            const response = await axios.post('update/product/'+this.$route.params.id,this.form,config);
             if(response.data.status == 200){
                 this.$router.push('/product')
             }
-        }
+        },
+        uploadFile(e) {
+            var files = e.target.files;
+            const filesArr = Array.from(files);
+
+            filesArr.forEach((file) => {
+                if (!file.type.match('pdf.*') || this.imageArray.length >= this.maxImages) {
+                    return;
+                }
+                this.pdfArray.push({
+                    name: file.name,
+                    url: URL.createObjectURL(file),
+                    file: file,
+                });
+                this.form.files = this.pdfArray
+            });
+        },
+        handleFileChange(event) {
+            var files = event.target.files;
+            const filesArr = Array.from(files);
+
+            filesArr.forEach((file) => {
+                if (!file.type.match('image.*') || this.imageArray.length >= this.maxImages) {
+                    return;
+                }
+                this.imageArray.push({
+                    name: file.name,
+                    url: URL.createObjectURL(file),
+                    image: file,
+                });
+                this.form.images = this.imageArray
+            });
+        },
+        removeImage(index) {
+            this.imageArray.splice(index, 1);
+        },
     },
     mounted(){
         this.edit();

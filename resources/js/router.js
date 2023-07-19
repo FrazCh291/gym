@@ -9,6 +9,7 @@ import Category from '../js/component/Category/index.vue';
 
 import AddProduct from '../js/component/product/add.vue';
 import EditProduct from '../js/component/product/edit.vue';
+import ShowProduct from '../js/component/product/show.vue';
 import Product from '../js/component/product/index.vue';
 
 import AddSetting from '../js/component/setting/add.vue';
@@ -27,6 +28,7 @@ const routes = [
     { path: "/product", component: Product },
     { path: "/add/product/", component: AddProduct },
     { path: "/edit/product/:id", component: EditProduct },
+    { path: "/show/product/:id", component: ShowProduct },
     { path: "/add/category", component: AddCategory },
     { path: "/edit/category/:id", component: EditCategory },
     { path: "/settings", component: Setting },
