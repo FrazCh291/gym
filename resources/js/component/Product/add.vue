@@ -9,6 +9,9 @@
                         <div class="card-body">
                             <h4 class="card-title">Add Product</h4>
                             <form class="forms-sample" @submit.prevent="submit" enctype="multipart/form-data">
+                                <ul>
+                                    <li v-for="error in errors">{{ error }}</li>
+                                </ul>
                                 <label for="">Select Category</label>
                                 <select class="form-select" aria-label="Default select example" v-model="form.category_id">
                                     <option>Select Category</option>
@@ -63,14 +66,15 @@ export default {
     name: 'add',
     data() {
         return {
+            errors: [],
             form: {
                 name: '',
                 title: '',
                 price: '',
                 status: '',
                 category_id: '',
-                files:[],
-                images:[]
+                files: [],
+                images: []
             },
             categories: '',
             selectedFiles: '',
@@ -91,7 +95,28 @@ export default {
             }
         },
         async submit() {
-            const response = await axios.post('/add/product',this.form);
+            this.errors = [];
+            if (!this.form.name) {
+                this.errors.push('Name required.');
+            }
+            if (!this.form.age) {
+                this.errors.push('Age required.');
+            }
+            if (!this.form.name) {
+                this.errors.push('Name required.');
+            }
+            if (!this.form.age) {
+                this.errors.push('Age required.');
+            }
+            if (!this.form.name) {
+                this.errors.push('Name required.');
+            }
+            if (!this.form.age) {
+                this.errors.push('Age required.');
+            }
+
+            e.preventDefault();
+            const response = await axios.post('/add/product', this.form);
             if (response.data.status == 200) {
                 this.$router.push('/product')
             }

@@ -17602,6 +17602,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   name: 'add',
   data: function data() {
     return {
+      errors: [],
       form: {
         name: '',
         title: '',
@@ -17649,14 +17650,34 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
-              _context2.next = 2;
+              _this2.errors = [];
+              if (!_this2.form.name) {
+                _this2.errors.push('Name required.');
+              }
+              if (!_this2.form.age) {
+                _this2.errors.push('Age required.');
+              }
+              if (!_this2.form.name) {
+                _this2.errors.push('Name required.');
+              }
+              if (!_this2.form.age) {
+                _this2.errors.push('Age required.');
+              }
+              if (!_this2.form.name) {
+                _this2.errors.push('Name required.');
+              }
+              if (!_this2.form.age) {
+                _this2.errors.push('Age required.');
+              }
+              e.preventDefault();
+              _context2.next = 10;
               return axios__WEBPACK_IMPORTED_MODULE_2__["default"].post('/add/product', _this2.form);
-            case 2:
+            case 10:
               response = _context2.sent;
               if (response.data.status == 200) {
                 _this2.$router.push('/product');
               }
-            case 4:
+            case 12:
             case "end":
               return _context2.stop();
           }
@@ -18918,7 +18939,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $options.submit && $options.submit.apply($options, arguments);
     }, ["prevent"])),
     enctype: "multipart/form-data"
-  }, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.errors, function (error) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(error), 1 /* TEXT */);
+  }), 256 /* UNKEYED_FRAGMENT */))]), _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
     "class": "form-select",
     "aria-label": "Default select example",
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
