@@ -130,7 +130,7 @@ export default {
                 this.errors.push('Files required.');
                 return;
             }
-
+                
             e.preventDefault();
             const config = {
                 headers: {

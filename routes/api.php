@@ -43,9 +43,12 @@ Route::controller(CategoryController::class)->group(function () {
 Route::controller(ProductController::class)->group(function () {
     Route::post('add/product', 'store');
     Route::get('product', 'index');
+    Route::get('show/product/{id}', 'show');
     Route::get('edit/product/{id}', 'edit');
     Route::post('update/product/{id}', 'update');
     Route::get('delete/product/{id}', 'destroy');
+    Route::get('delete/file/{id}', 'delete');
+    Route::get('download/file/{id}', 'download');
 });
 
 Route::controller(SettingsController::class)->group(function () {

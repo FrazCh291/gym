@@ -31,9 +31,9 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->status == true){
+        if ($request->status == true) {
             $status = 1;
-        }else{
+        } else {
             $status = 0;
         }
         $product = Product::create([
@@ -43,11 +43,11 @@ class ProductController extends Controller
             'price' => $request->price,
             'status' => $status,
         ]);
-        if($request->has('images')){
-            foreach ($request->images as $image){
+        if ($request->has('images')) {
+            foreach ($request->images as $image) {
                 $file = $image['image'];
                 $originalname = $file->getClientOriginalName();
-                $path = $file->storeAs('images',$originalname);
+                $path = $file->storeAs('images', $originalname);
                 $images = Media::create([
                     'product_id' => $product->id,
                     'image' => $path,
@@ -55,11 +55,11 @@ class ProductController extends Controller
                 ]);
             }
         }
-        if($request->has('files')){
-            foreach ($request['files'] as $key=> $file){
+        if ($request->has('files')) {
+            foreach ($request['files'] as $key => $file) {
                 $file = $file['file'];
                 $originalname = $file->getClientOriginalName();
-                $path = $file->storeAs('pdf',$originalname);
+                $path = $file->storeAs('pdf', $originalname);
                 $images = Media::create([
                     'product_id' => $product->id,
                     'image' => $path,
@@ -69,7 +69,7 @@ class ProductController extends Controller
         }
         $data['message'] = 'Product Add Successfully';
         $data['status'] = 200;
-        if(!empty($product)){
+        if (!empty($product)) {
             return response()->json($data);
         }
     }
@@ -77,11 +77,17 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function download(string $id)
     {
-        //
+            $file = Media::findOrfail($id);
+            return response()->download(storage_path("app/" . $file->image));
     }
 
+    public function show($id)
+    {
+        $file = Product::with('files')->where('id', $id)->first();
+        return response()->json($file);
+    }
     /**
      * Show the form for editing the specified resource.
      */
@@ -96,12 +102,12 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        if($request->status == true){
+        if ($request->status == true) {
             $status = 1;
-        }else{
+        } else {
             $status = 0;
         }
-        $product = Product::where('id',$id)->update([
+        $product = Product::where('id', $id)->update([
             'category_id' => $request->category_id,
             'title' => $request->title,
             'name' => $request->name,
@@ -110,7 +116,7 @@ class ProductController extends Controller
         ]);
         $data['message'] = 'Product Update Successfully';
         $data['status'] = 200;
-        if(!empty($product)){
+        if (!empty($product)) {
             return response()->json($data);
         }
     }
@@ -125,5 +131,11 @@ class ProductController extends Controller
         $data['message'] = 'Product Delete Successfully';
         return response()->json($data);
     }
+    public function delete(string $id)
+    {
+        $delFile = Media::findorfail($id);
+        $delFile->delete();
+        $data['message'] = 'File Delete Successfully';
+        return response()->json($data);
+    }
 }
-

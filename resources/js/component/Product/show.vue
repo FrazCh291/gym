@@ -8,7 +8,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
-                                <h4 class="card-title col-11">Product</h4>
+                                <h4 class="card-title col-11">Files</h4>
                                 <router-link to="/product" class="nav-link btn btn-primary col-1">Back</router-link>
                             </div>
                             
@@ -27,7 +27,9 @@
                                             <td>{{ file.image }}</td>
                                             <td>{{ file.type }}</td>
                                             <td>
-                                            <a @click="del(file.id)" class="btn btn-danger">Delete</a></td>
+                                            <a @click="download(file.id)" class="btn btn-success">Download</a>&nbsp;
+                                            <a @click="del(file.id)" class="btn btn-danger">Delete</a>
+                                        </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -56,12 +58,15 @@ export default {
     },
     methods:{
         async getMedia(){
-            const response = await axios.get('/product');
-            this.files = response.data[0].files;
+            const response = await axios.get('/show/product/'+this.$route.params.id);
+            this.files = response.data.files;
         },
         async del(id){
             const response = await axios.get('/delete/file/'+id);
-            this.getProduct();
+            this.getMedia();
+        },
+        async download(id){
+            const response = await axios.get('/download/file/'+id);
         }
     },
     mounted(){
