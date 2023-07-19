@@ -69,6 +69,8 @@ export default {
                 price: '',
                 status: '',
                 category_id: '',
+                files:[],
+                images:[]
             },
             categories: '',
             selectedFiles: '',
@@ -89,27 +91,18 @@ export default {
             }
         },
         async submit() {
-            const formData = new FormData();
-            formData.append('images', this.selectedImage);
-            formData.append('file', this.selectedFiles);
-            formData.append('name', this.form.name);
-            formData.append('category_id', this.form.category_id);
-            formData.append('title', this.form.title);
-            formData.append('price', this.form.price);
-            formData.append('status', this.form.status);
-            const config = {
-                headers: { 'content-type': 'multipart/form-data' }
-            }
-            const response = await axios.post('/add/product',formData,config);
+            const response = await axios.post('/add/product',this.form);
             if (response.data.status == 200) {
                 this.$router.push('/product')
             }
         },
         uploadFile(e) {
             this.selectedFiles = e.target.files;
+            this.form.files = this.selectedFiles
         },
         uploadImage(e) {
             this.selectedImage = e.target.files;
+            this.form.images = this.selectedFiles
         }
     },
     mounted() {

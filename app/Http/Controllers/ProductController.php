@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -29,7 +30,6 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        return $request->all();
         if($request->status == true){
             $status = 1;
         }else{
@@ -42,6 +42,11 @@ class ProductController extends Controller
             'price' => $request->price,
             'status' => $status,
         ]);
+        if($request->has('images')){
+            foreach ($request->images as $image){
+                       
+            }
+        }
         $data['message'] = 'Product Add Successfully';
         $data['status'] = 200;
         if(!empty($product)){
