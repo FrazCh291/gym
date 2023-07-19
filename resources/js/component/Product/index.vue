@@ -21,8 +21,8 @@
                                             <th>Image</th>
                                             <th>File</th>
                                             <th>Price</th>
+                                            <th>Status</th>
                                             <th>Action</th>
-                                            <th></th>
                                             <th></th>
                                         </tr>
                                     </thead>

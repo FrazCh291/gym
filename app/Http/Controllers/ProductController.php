@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Media;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -30,21 +31,32 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        Log::info($request->all());
+        return;
         if($request->status == true){
             $status = 1;
         }else{
             $status = 0;
         }
-        $product = Product::create([
-            'category_id' => $request->category_id,
-            'title' => $request->title,
-            'name' => $request->name,
-            'price' => $request->price,
-            'status' => $status,
-        ]);
+        // $product = Product::create([
+        //     'category_id' => $request->category_id,
+        //     'title' => $request->title,
+        //     'name' => $request->name,
+        //     'price' => $request->price,
+        //     'status' => $status,
+        // ]);
         if($request->has('images')){
             foreach ($request->images as $image){
-                       
+                $file = $image['name'];
+                Log::info($file);
+                $originalname = $file->getClientOriginalName();
+                // Log::info($file,$originalname);
+                $path = $file->storeAs('uploads',$originalname);
+                $images = Media::create([
+                    'product_id' => '1',
+                    'image' => $path,
+                    'type' => 'image'
+                ]);
             }
         }
         $data['message'] = 'Product Add Successfully';

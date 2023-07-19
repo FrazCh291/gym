@@ -8,7 +8,10 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Edit Category</h4>
-                            <form class="forms-sample" @submit.prevent="submit">
+                            <form class="forms-sample" @submit.prevent="submit($event)">
+                                <ul>
+                                    <li v-for="error in errors">{{ error }}</li>
+                                </ul>
                                 <div class="form-group">
                                     <label for="exampleInputUsername1">Name</label>
                                     <input type="text" name="name" v-model="form.name" class="form-control" id="exampleInputUsername1"
@@ -41,6 +44,7 @@ export default {
     name: 'edit',
     data(){
         return{
+            errors: [],
             form:{
                 namee:'',
                 value:'',
@@ -60,6 +64,17 @@ export default {
             this.form.status = response.data.status ;
         },
         async submit(){
+            this.errors = [];
+            if (!this.form.name) {
+                this.errors.push('Name required.');
+                return;
+            }
+            if (!this.form.value) {
+                this.errors.push('Value required.');
+                return;
+            }
+
+            e.preventDefault();
             const response = await axios.post('/update/setting/'+this.$route.params.id,this.form);
             if(response.data.status == 200){
                 this.$router.push('/settings')

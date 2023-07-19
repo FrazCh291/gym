@@ -8,7 +8,10 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Add User</h4>
-                            <form class="forms-sample" @submit.prevent="submit">
+                            <form class="forms-sample" @submit.prevent="submit($event)">
+                                <ul>
+                                    <li v-for="error in errors">{{ error }}</li>
+                                </ul>
                                 <div class="form-group">
                                     <label for="exampleInputUsername1">Name</label>
                                     <input type="text" name="name" v-model="form.name" class="form-control" id="exampleInputUsername1"
@@ -51,6 +54,7 @@ export default {
     },
     data(){
         return{
+            errors: [],
             form:{
                 name:'',
                 email:'',
@@ -60,7 +64,26 @@ export default {
         }
     },
     methods:{
-        async submit() {
+        async submit(e) {
+            this.errors = [];
+            if (!this.form.name) {
+                this.errors.push('Name required.');
+                return;
+            }
+            if (!this.form.email) {
+                this.errors.push('Email required.');
+                return;
+            }
+            if (!this.form.phone) {
+                this.errors.push('Phone required.');
+                return;
+            }
+            if (!this.form.address) {
+                this.errors.push('Address required.');
+                return;
+            }
+
+            e.preventDefault();
             const response = await axios.post('/add/user', this.form);
             if (response.data.status == 200) {
                 this.$router.push('/user')

@@ -8,11 +8,14 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Add Category</h4>
-                            <form class="forms-sample" @submit.prevent="submit">
+                            <form class="forms-sample" @submit.prevent="submit($event)">
+                                <ul>
+                                    <li v-for="error in errors">{{ error }}</li>
+                                </ul>
                                 <div class="form-group">
                                     <label for="exampleInputUsername1">Name</label>
                                     <input type="text" name="name" v-model="form.name" class="form-control"
-                                        id="exampleInputUsername1" placeholder="Username">
+                                        id="exampleInputUsername1" placeholder="Name">
                                 </div>
                                 <div class="form-check">
                                     <label> Status </label>
@@ -40,6 +43,7 @@ export default {
     },
     data(){
         return{
+            errors: [],
             form:{
                 name:'',
                 status:'',
@@ -47,7 +51,13 @@ export default {
         }
     },
     methods: {
-        async submit() {
+        async submit(e) {
+            this.errors = [];
+            if (!this.form.name) {
+                this.errors.push('Name required.');
+                return;
+            }
+            e.preventDefault();
             const response = await axios.post('/add/category', this.form);
             if (response.data.status == 200) {
                 this.$router.push('/category')

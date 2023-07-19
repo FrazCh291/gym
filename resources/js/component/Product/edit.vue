@@ -8,7 +8,10 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Edit Product</h4>
-                            <form class="forms-sample" @submit.prevent="submit">
+                            <form class="forms-sample" @submit.prevent="submit($event)">
+                                <ul>
+                                    <li v-for="error in errors">{{ error }}</li>
+                                </ul>
                                 <select class="form-select" aria-label="Default select example">
                                     <option>Select Category</option>
                                     <option v-for="category in categories" :value="category.id">
@@ -62,6 +65,7 @@ export default {
     name: 'edit',
     data() {
         return {
+            errors: [],
             form: {
                 name: '',
                 title: '',
@@ -93,6 +97,33 @@ export default {
             }  
         },
        async submit() {
+        this.errors = [];
+            if (!this.form.name) {
+                this.errors.push('Name required.');
+                return;
+            }
+            if (!this.form.title) {
+                this.errors.push('Title required.');
+                return;
+            }
+            if (!this.form.price) {
+                this.errors.push('Price required.');
+                return;
+            }
+            if (!this.form.category_id) {
+                this.errors.push('Category required.');
+                return;
+            }
+            if (!this.form.files) {
+                this.errors.push('Files required.');
+                return;
+            }
+            if (!this.form.images) {
+                this.errors.push('Images required.');
+                return;
+            }
+
+            e.preventDefault();
             const response = await axios.post('update/product/'+this.$route.params.id,this.form);
             if(response.data.status == 200){
                 this.$router.push('/product')
