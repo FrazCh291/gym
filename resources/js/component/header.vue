@@ -56,11 +56,11 @@
 
         <div class="navbar-header navbar-left">
           <a class="navbar-brand" href="index.html">
-            <img alt="Brand" src="./../../public/assets/images/content/logo.png">
+            <!-- <img alt="Brand" src="./../../public/assets/images/content/logo.png"> -->
           </a>
         </div>
 
-        <ul class="nav navbar-nav ct-navbar--fadeIn navbar-right">
+        <ul class="nav navbar-nav ct-navbar--fadeIn navbar-right" style="display: contents;">
           <li class="onepage active"><a href="#home">Home</a></li>
           <li class="onepage"><a href="#testimonials">Testimonials</a></li>
           <li class="onepage"><a href="#trainers">Trainers</a></li>

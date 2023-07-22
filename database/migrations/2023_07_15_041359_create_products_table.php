@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('price')->nullable();
             $table->boolean('status')->nullable();
+            $table->boolean('description')->nullable();
             $table->timestamps();
         });
     }

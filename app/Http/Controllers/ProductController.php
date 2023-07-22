@@ -18,12 +18,32 @@ class ProductController extends Controller
         return response()->json($product);
     }
 
+    public function program()
+    {
+        $product = Product::where('name','Program')->with('files')->first();
+        return response()->json($product);
+    }
+
+    public function subscription()
+    {
+        $product = Product::where('name','Monthly Subscription')->with('files')->first();
+        return response()->json($product);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function productFiles($id)
     {
-        //
+        $product = Media::where('product_id', $id)->where('type','pdf')->get();
+        if (!empty($product)) {
+            foreach ($product as $file) {
+                return response()->download(storage_path("app/" . $file->image));
+            }
+        }
+        $data['message'] = 'Get Files Successfully';
+        $data['status'] = 200;
+        return response()->json($data);
     }
 
     /**
@@ -42,6 +62,7 @@ class ProductController extends Controller
             'name' => $request->name,
             'price' => $request->price,
             'status' => $status,
+            'description' =>  $request->description,
         ]);
         if ($request->has('images')) {
             foreach ($request->images as $image) {
@@ -79,8 +100,8 @@ class ProductController extends Controller
      */
     public function download(string $id)
     {
-            $file = Media::findOrfail($id);
-            return response()->download(storage_path("app/" . $file->image));
+        $file = Media::findOrfail($id);
+        return response()->download(storage_path("app/" . $file->image));
     }
 
     public function show($id)
@@ -113,6 +134,7 @@ class ProductController extends Controller
             'name' => $request->name,
             'price' => $request->price,
             'status' => $status,
+            'description' => $request->description,
         ]);
         $data['message'] = 'Product Update Successfully';
         $data['status'] = 200;

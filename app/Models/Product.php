@@ -16,6 +16,7 @@ class Product extends Model
         'title',
         'price',
         'status',
+        'description'
     ];
     public function files(){
        return $this->hasMany(Media::class,'product_id','id');
