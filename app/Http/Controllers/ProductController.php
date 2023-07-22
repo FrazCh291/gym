@@ -40,9 +40,11 @@ class ProductController extends Controller
             foreach ($product as $file) {
                 return response()->download(storage_path("app/" . $file->image));
             }
+        }else{
+            $data['message'] = 'Not Have Files';
         }
-        $data['message'] = 'Get Files Successfully';
-        $data['status'] = 200;
+        $data['status'] = 200; 
+       
         return response()->json($data);
     }
 
