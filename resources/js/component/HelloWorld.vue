@@ -175,8 +175,8 @@
           style="background-image: url(&quot;&quot;); min-height: 865px;">
           <div class="ct-mediaSection-video">
             <video muted="" loop="" autoplay="autoplay" preload="auto">
-              <!-- <source src="../../public/assets/images/video.mp4" type="video/mp4"> -->
-              <source src="http://dojo.html.themeforest.createit.pl/assets/videos/video.webm" type="video/webm">
+              <source :src="videoSource" type="video/mp4">
+              <!-- <source src="http://dojo.html.themeforest.createit.pl/assets/videos/video.webm" type="video/webm"> -->
             </video>
           </div>
           <div class="ct-mediaSection-inner">
@@ -3574,31 +3574,31 @@
                 <div class="col-md-6">
                   <div class="form-group ct-u-marginBottom30">
                     <input type="text" class="form-control" id="firstName" required="" name="field[]"
-                      placeholder="First Name">
+                      placeholder="First Name" style="height: 40px;">
                     <label for="firstName">First Name</label>
                   </div>
 
                   <div class="form-group ct-u-marginBottom30">
-                    <input type="text" class="form-control" id="adress" required="" name="field[]" placeholder="Adress">
+                    <input type="text" class="form-control" id="adress" required="" name="field[]" placeholder="Adress" style="height: 40px;">
                     <label for="adress">Adress</label>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group ct-u-marginBottom30">
                     <input type="text" class="form-control" id="lastName" required="" name="field[]"
-                      placeholder="Last Name">
+                      placeholder="Last Name" style="height: 40px;">
                     <label for="lastName">Last Name</label>
                   </div>
 
                   <div class="form-group ct-u-marginBottom30">
-                    <input type="email" class="form-control" id="email" required="" name="field[]" placeholder="Email">
+                    <input type="email" class="form-control" id="email" required="" name="field[]" placeholder="Email" style="height: 40px;">
                     <label for="email">E-mail</label>
                   </div>
                 </div>
               </div>
 
-              <div class="row">
-                <div class="col-xs-12 ct-u-marginBottom30">
+              <div class="row col-12 p-0 ml-1">
+                <div class="col-12 ct-u-marginBottom30 p-0">
                   <div class="form-group">
                     <textarea class="form-control" id="textarea" rows="7" required="" name="field[]"
                       placeholder="Message"></textarea>
@@ -3606,9 +3606,9 @@
                   </div>
                 </div>
 
-                <div class="col-xs-12">
+                <div class="col-12 p-0">
                   <div class="form-group">
-                    <div class="row">
+                    <div class="row col-12 p-0">
                       <div class="col-sm-offset-4 col-sm-4">
                         <button type="submit" class="btn btn-block ct-btn--o btn-default"><span>Submit</span></button>
                       </div>
@@ -3648,7 +3648,7 @@
                     <div class="col-lg-8 col-md-7 col-sm-7">
                       <div class="form-group">
                         <input type="text" class="form-control input-lg" id="subscribe" placeholder="E-mail" required=""
-                          name="field[]">
+                          name="field[]" style="height:50px">
                         <label for="subscribe">You e-mail Adress</label>
                       </div>
                     </div>
@@ -3689,6 +3689,7 @@ export default {
     return {
       Program_Products: [],
       Subs_Products: [],
+      videoSource: require("../../public/assets/images/video.mp4")
     }
   },
   components: {
@@ -3712,6 +3713,7 @@ export default {
   mounted() {
     this.getProductProgram();
     this.getProductSubs();
+    console.log(videoSource);
   },
 }
 </script>

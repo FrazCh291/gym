@@ -158,10 +158,10 @@ TITANS</span></h6>
       <div class="container">
 
         <a href="index.html">
-          <img alt="Brand" src="./../../public/assets/images/content/footerLogo.png">
+          <img alt="Brand" src="./../../public/logo.jpeg" style="width: 85px;">
         </a>
 
-        <ul class="list-unstyled list-inline">
+        <ul class="list-unstyled list-inline" style="display: contents;">
 
           <li><a href="index.html">Home</a></li>
 

@@ -6,6 +6,7 @@ use App\Models\Media;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -20,13 +21,13 @@ class ProductController extends Controller
 
     public function program()
     {
-        $product = Product::where('name','Program')->with('files')->first();
+        $product = Product::where('name', 'Program')->with('files')->first();
         return response()->json($product);
     }
 
     public function subscription()
     {
-        $product = Product::where('name','Monthly Subscription')->with('files')->first();
+        $product = Product::where('name', 'Monthly Subscription')->with('files')->first();
         return response()->json($product);
     }
 
@@ -35,16 +36,25 @@ class ProductController extends Controller
      */
     public function productFiles($id)
     {
-        $product = Media::where('product_id', $id)->where('type','pdf')->get();
+        $product = Media::where('product_id', $id)->where('type', 'pdf')->get();
         if (!empty($product)) {
             foreach ($product as $file) {
-                return response()->download(storage_path("app/" . $file->image));
+                // $filePath = storage_path("app/" . $file->image);
+                // $headers = [
+                //     'Content-Type' => 'application/octet-stream', // Change the content type based on the file type
+                //     'Content-Disposition' => 'attachment; filename="' . $file->image . '"',
+                // ];
+                // $removed_pdf_slashes = str_replace(['pdf', '/'], '', $file->image);
+
+                // return response()->download($filePath, $removed_pdf_slashes, $headers);
+                // return response()->download(storage_path("app/" . $file->image, 'faraz.pdf'));
+                return Storage::download("app/" . $file->image);
             }
-        }else{
+        } else {
             $data['message'] = 'Not Have Files';
         }
-        $data['status'] = 200; 
-       
+        $data['status'] = 200;
+
         return response()->json($data);
     }
 
