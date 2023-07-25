@@ -175,7 +175,7 @@
           style="background-image: url(&quot;&quot;); min-height: 865px;">
           <div class="ct-mediaSection-video">
             <video muted="" loop="" autoplay="autoplay" preload="auto">
-              <source :src="videoSource" type="video/mp4">
+              <!-- <source src="../../public/assets/images/video.mp4" type="video/mp4"> -->
               <!-- <source src="http://dojo.html.themeforest.createit.pl/assets/videos/video.webm" type="video/webm"> -->
             </video>
           </div>
@@ -3579,7 +3579,8 @@
                   </div>
 
                   <div class="form-group ct-u-marginBottom30">
-                    <input type="text" class="form-control" id="adress" required="" name="field[]" placeholder="Adress" style="height: 40px;">
+                    <input type="text" class="form-control" id="adress" required="" name="field[]" placeholder="Adress"
+                      style="height: 40px;">
                     <label for="adress">Adress</label>
                   </div>
                 </div>
@@ -3591,7 +3592,8 @@
                   </div>
 
                   <div class="form-group ct-u-marginBottom30">
-                    <input type="email" class="form-control" id="email" required="" name="field[]" placeholder="Email" style="height: 40px;">
+                    <input type="email" class="form-control" id="email" required="" name="field[]" placeholder="Email"
+                      style="height: 40px;">
                     <label for="email">E-mail</label>
                   </div>
                 </div>
@@ -3689,7 +3691,6 @@ export default {
     return {
       Program_Products: [],
       Subs_Products: [],
-      videoSource: require("../../public/assets/images/video.mp4")
     }
   },
   components: {
@@ -3706,7 +3707,17 @@ export default {
       this.Program_Products = response.data;
     },
     async download(id) {
-      const response = await axios.get('/download/product/all/file/' + id);
+      const response = await axios.get('/download/product/all/file/' + id, {
+        responseType: 'blob',
+      });
+      var fileURL = window.URL.createObjectURL(new Blob([response.data]));
+      var fileLink = document.createElement('a');
+
+      fileLink.href = fileURL;
+      fileLink.setAttribute('download', 'file.pdf');
+      document.body.appendChild(fileLink);
+
+      fileLink.click();
     },
 
   },
@@ -3736,4 +3747,5 @@ li {
 
 a {
   color: #42b983;
-}</style>
+}
+</style>

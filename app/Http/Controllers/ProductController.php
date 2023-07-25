@@ -6,6 +6,7 @@ use App\Models\Media;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -39,21 +40,15 @@ class ProductController extends Controller
         $product = Media::where('product_id', $id)->where('type', 'pdf')->get();
         if (!empty($product)) {
             foreach ($product as $file) {
-                // $filePath = storage_path("app/" . $file->image);
-                // $headers = [
-                //     'Content-Type' => 'application/octet-stream', // Change the content type based on the file type
-                //     'Content-Disposition' => 'attachment; filename="' . $file->image . '"',
-                // ];
-                // $removed_pdf_slashes = str_replace(['pdf', '/'], '', $file->image);
-
-                // return response()->download($filePath, $removed_pdf_slashes, $headers);
-                // return response()->download(storage_path("app/" . $file->image, 'faraz.pdf'));
-                return Storage::download("app/" . $file->image);
+                $data['file'] = storage_path("app/" . $file->image);
+                $data['status'] = 200;
+                $data['filename'] = str_replace(['pdf', '/'], '', $file);
+                return response()->download($data['file']);
             }
         } else {
             $data['message'] = 'Not Have Files';
+            $data['status'] = 400;
         }
-        $data['status'] = 200;
 
         return response()->json($data);
     }
@@ -61,7 +56,7 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request) 
     {
         if ($request->status == true) {
             $status = 1;
@@ -113,7 +108,10 @@ class ProductController extends Controller
     public function download(string $id)
     {
         $file = Media::findOrfail($id);
-        return response()->download(storage_path("app/" . $file->image));
+        $data['file'] = storage_path("app/" . $file->image);
+        $data['status'] = 200;
+        $data['filename'] = str_replace(['pdf', '/'], '', $file->image);
+        return response()->download($data);
     }
 
     public function show($id)
