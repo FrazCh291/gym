@@ -175,8 +175,8 @@
           style="background-image: url(&quot;&quot;); min-height: 865px;">
           <div class="ct-mediaSection-video">
             <video muted="" loop="" autoplay="autoplay" preload="auto">
-              <!-- <source src="../../public/assets/images/video.mp4" type="video/mp4"> -->
-              <!-- <source src="http://dojo.html.themeforest.createit.pl/assets/videos/video.webm" type="video/webm"> -->
+              <source src="http://dojo.html.themeforest.createit.pl/assets/videos/video.mp4" type="video/mp4">
+              <source src="http://dojo.html.themeforest.createit.pl/assets/videos/video.webm" type="video/webm">
             </video>
           </div>
           <div class="ct-mediaSection-inner">
@@ -2533,7 +2533,7 @@
                 </p>
 
                 <div class="text-center ct-u-marginTop80">
-                  <a href="#" class="btn ct-btn--o btn-default"
+                  <a  class="btn ct-btn--o btn-default"
                     @click="download(Program_Products.id)"><span>Download</span></a>
                 </div>
 
@@ -2557,7 +2557,7 @@
                 </p>
 
                 <div class="text-center ct-u-marginTop60">
-                  <a href="#" class="btn ct-btn--c btn-default"
+                  <a  class="btn ct-btn--c btn-default"
                     @click="download(Subs_Products.id)"><span>Download</span></a>
                 </div>
               </article>
@@ -3724,7 +3724,6 @@ export default {
   mounted() {
     this.getProductProgram();
     this.getProductSubs();
-    console.log(videoSource);
   },
 }
 </script>
