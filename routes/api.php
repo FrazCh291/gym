@@ -49,6 +49,9 @@ Route::controller(ProductController::class)->group(function () {
     Route::get('delete/product/{id}', 'destroy');
     Route::get('delete/file/{id}', 'delete');
     Route::get('download/file/{id}', 'download');
+    Route::get('download/product/all/file/{id}', 'productFiles');
+    Route::get('product/subscription', 'subscription');
+    Route::get('product/program', 'program');
 });
 
 Route::controller(SettingsController::class)->group(function () {

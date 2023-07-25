@@ -21,6 +21,10 @@ import EditUser from '../js/component/User/edit.vue';
 import Users from '../js/component/User/index.vue';
 
 import dashboard from '../js/component/dashboard.vue';
+import Theme from '../js/component/HelloWorld.vue';
+
+import Subscription from '../js/pages/subscription.vue';
+import Program from '../js/pages/program.vue';
 
 const routes = [
     { path: "/", component: Login },
@@ -38,6 +42,9 @@ const routes = [
     { path: "/add/user/", component: AddUser },
     { path: "/edit/user/:id", component: EditUser },
     { path: "/user", component: Users },
+    { path: "/theme", component: Theme},
+    { path: "/subscription", component: Subscription},
+    { path: "/program", component: Program},
 ];
 const router = createRouter({
     history : createWebHistory(),

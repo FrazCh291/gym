@@ -6,6 +6,8 @@ use App\Models\Media;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -18,18 +20,43 @@ class ProductController extends Controller
         return response()->json($product);
     }
 
+    public function program()
+    {
+        $product = Product::where('name', 'Program')->with('files')->first();
+        return response()->json($product);
+    }
+
+    public function subscription()
+    {
+        $product = Product::where('name', 'Monthly Subscription')->with('files')->first();
+        return response()->json($product);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function productFiles($id)
     {
-        //
+        $product = Media::where('product_id', $id)->where('type', 'pdf')->get();
+        if (!empty($product)) {
+            foreach ($product as $file) {
+                $data['file'] = storage_path("app/" . $file->image);
+                $data['status'] = 200;
+                $data['filename'] = str_replace(['pdf', '/'], '', $file);
+                return response()->download($data['file']);
+            }
+        } else {
+            $data['message'] = 'Not Have Files';
+            $data['status'] = 400;
+        }
+
+        return response()->json($data);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request) 
     {
         if ($request->status == true) {
             $status = 1;
@@ -42,6 +69,7 @@ class ProductController extends Controller
             'name' => $request->name,
             'price' => $request->price,
             'status' => $status,
+            'description' =>  $request->description,
         ]);
         if ($request->has('images')) {
             foreach ($request->images as $image) {
@@ -79,8 +107,11 @@ class ProductController extends Controller
      */
     public function download(string $id)
     {
-            $file = Media::findOrfail($id);
-            return response()->download(storage_path("app/" . $file->image));
+        $file = Media::findOrfail($id);
+        $data['file'] = storage_path("app/" . $file->image);
+        $data['status'] = 200;
+        $data['filename'] = str_replace(['pdf', '/'], '', $file->image);
+        return response()->download($data);
     }
 
     public function show($id)
@@ -113,6 +144,7 @@ class ProductController extends Controller
             'name' => $request->name,
             'price' => $request->price,
             'status' => $status,
+            'description' => $request->description,
         ]);
         $data['message'] = 'Product Update Successfully';
         $data['status'] = 200;

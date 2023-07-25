@@ -59,6 +59,11 @@
                                     <input type="number" name="price" v-model="form.price" class="form-control"
                                         id="exampleInputUsername1" placeholder="Price">
                                 </div>
+                                <div class="form-group">
+                                    <label for="exampleInputUsername1">Description</label>
+                                    <textarea type="number" name="description" v-model="form.description" class="form-control"
+                                        id="exampleInputUsername1" row="5" placeholder="Description"></textarea>
+                                </div>
                                 <div class="form-check">
                                     <label> Status </label>
                                     <input type="checkbox" v-model="form.status" class="form-check-input">
@@ -92,7 +97,8 @@ export default {
                 status: '',
                 category_id: '',
                 files: [],
-                images: []
+                images: [],
+                description:''
             },
             categories: '',
         }
@@ -128,6 +134,10 @@ export default {
             }
             if (!this.form.files) {
                 this.errors.push('Files required.');
+                return;
+            }
+            if (!this.form.description) {
+                this.errors.push('Description required.');
                 return;
             }
                 

@@ -43,6 +43,11 @@
                                     <input type="number" name="price" v-model="form.price" class="form-control"
                                         id="exampleInputUsername1" placeholder="Price">
                                 </div>
+                                <div class="form-group">
+                                    <label for="exampleInputUsername1">Description</label>
+                                    <textarea type="number" name="description" v-model="form.description" class="form-control"
+                                        id="exampleInputUsername1" row="5" placeholder="Description"></textarea>
+                                </div>
                                 <div class="form-check">
                                     <label> Status </label>
                                     <input type="checkbox" v-model="form.status" class="form-check-input">
@@ -73,7 +78,8 @@ export default {
                 name: '',
                 title: '',
                 price: '',
-                status: ''
+                status: '',
+                description:''
             },
             categories:''
 
@@ -97,6 +103,7 @@ export default {
                 this.form.title = response.data.title;
                 this.form.price = response.data.price;
                 this.form.status = response.data.status;
+                this.form.description = response.data.description;
             }  
         },
        async submit() {
@@ -123,6 +130,10 @@ export default {
             }
             if (!this.form.images) {
                 this.errors.push('Images required');
+                return;
+            }
+            if (!this.form.description) {
+                this.errors.push('Description required');
                 return;
             }
             e.preventDefault();
